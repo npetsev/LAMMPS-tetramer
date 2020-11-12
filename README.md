@@ -5,6 +5,7 @@ Note that files in repository are not standalone; the included files
 must be added to LAMMPS source coded and then compiled.
 
 ----------INSTALLATION----------
+
 This force field should work with any version of LAMMPS, though 
 it has been tested and debugged using 2013 version. To install:
 
@@ -30,6 +31,7 @@ directory:
 3) Compile LAMMPS.
 
 --------------NOTES-------------
+
 1) Version of the force field in this repository uses a cut and shifted
 potential; the shifted term can be commented out, though without a 
 shifted force, there is noticable energy drift unless a prohibitively large
@@ -44,9 +46,8 @@ ee computes. To avoid this issue, include in the input script:
 
 thermo_modify norm no
 
-
-
 ---------IMPLEMENTATION---------
+
 The source code is set up as follows [brackets denote which function includes 
 the operation being discussed]:
 
