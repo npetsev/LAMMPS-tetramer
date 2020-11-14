@@ -53,7 +53,7 @@ PairLJSmoothLinearChiral::PairLJSmoothLinearChiral(LAMMPS *lmp) : Pair(lmp)
   comm_reverse = 8;
 
   first = 1;
-  }
+}
 
 /* ---------------------------------------------------------------------- */
 
