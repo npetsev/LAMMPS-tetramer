@@ -16,7 +16,8 @@
    Based on pair_lj_smooth_linear by Jonathan Zimmerman
 ------------------------------------------------------------------------- */
 
-#include "math.h"
+#include <mpi.h>
+#include <cmath>
 #include "stdio.h"
 #include "stdlib.h"
 #include "pair_lj_smooth_linear_chiral.h"
@@ -29,6 +30,7 @@
 #include "error.h"
 #include "neighbor.h" 
 #include "molecule.h" 
+#include "utils.h"
 
 using namespace LAMMPS_NS;
 
@@ -53,7 +55,7 @@ PairLJSmoothLinearChiral::PairLJSmoothLinearChiral(LAMMPS *lmp) : Pair(lmp)
   comm_reverse = 8;
 
   first = 1;
-}
+  }
 
 /* ---------------------------------------------------------------------- */
 
@@ -92,6 +94,7 @@ void PairLJSmoothLinearChiral::compute(int eflag, int vflag)
 {
   int i,j,ii,jj,inum,jnum,itype,jtype;
   int k,m,k1,k2,k3,k4,m1,m2,m3,m4;
+  int ind1,ind2,ind3,ind4,jnd1,jnd2,jnd3,jnd4;
   double xtmp,ytmp,ztmp,delx,dely,delz,evdwl,fpair,evdwl_tmp;
   double rsq,r2inv,r6inv,forcelj,factor_lj;
   double r,rinv;
@@ -133,12 +136,17 @@ void PairLJSmoothLinearChiral::compute(int eflag, int vflag)
     xtmp = x[i][0];
     ytmp = x[i][1];
     ztmp = x[i][2];
-
+	  
     // 3 body term - identify local ID of monomers in tetramer A using mapping arrays
-    k1 = atom->map(int(i1_vec[i]));
-    k2 = atom->map(int(i2_vec[i]));
-    k3 = atom->map(int(i3_vec[i]));
-    k4 = atom->map(int(i4_vec[i]));
+    ind1 = static_cast<int>(i1_vec[i]);
+    ind2 = static_cast<int>(i2_vec[i]);
+    ind3 = static_cast<int>(i3_vec[i]);
+    ind4 = static_cast<int>(i4_vec[i]);
+    
+    k1 = atom->map(ind1);
+    k2 = atom->map(ind2);
+    k3 = atom->map(ind3);
+    k4 = atom->map(ind4);
 
     jlist = firstneigh[i];
     jnum = numneigh[i]; 
@@ -150,10 +158,15 @@ void PairLJSmoothLinearChiral::compute(int eflag, int vflag)
       jtype = type[j];
 	
       // 3 body term - identify local ID of monomers in tetramer B using mapping arrays
-      m1 = atom->map(int(i1_vec[j]));
-      m2 = atom->map(int(i2_vec[j]));
-      m3 = atom->map(int(i3_vec[j]));
-      m4 = atom->map(int(i4_vec[j]));
+      jnd1 = static_cast<int>(i1_vec[j]);
+      jnd2 = static_cast<int>(i2_vec[j]);
+      jnd3 = static_cast<int>(i3_vec[j]);
+      jnd4 = static_cast<int>(i4_vec[j]);
+
+      m1 = atom->map(jnd1);
+      m2 = atom->map(jnd2);
+      m3 = atom->map(jnd3);
+      m4 = atom->map(jnd4);
 
       // find LJ factor, strip additional info
       factor_lj = special_lj[sbmask(j)];
@@ -178,7 +191,7 @@ void PairLJSmoothLinearChiral::compute(int eflag, int vflag)
 
         // chiral renormalization term
         double bias_lj = 1.0 + bias_global*zeta[i]*zeta[j];	  
-	      
+   
         // find LJ force
         fpair = bias_lj*factor_lj*forcelj*rinv;
 	      
@@ -289,8 +302,8 @@ void PairLJSmoothLinearChiral::settings(int narg, char **arg)
 {
   if (narg != 2) error->all(FLERR,"Illegal pair_style command");
 
-  cut_global = force->numeric(FLERR,arg[0]);
-  bias_global = force->numeric(FLERR,arg[1]);
+  cut_global = utils::numeric(FLERR,arg[0],false,lmp);
+  bias_global = utils::numeric(FLERR,arg[1],false,lmp);
 
   // reset cutoffs that have been explicitly set
   if (allocated) {
@@ -317,20 +330,20 @@ void PairLJSmoothLinearChiral::coeff(int narg, char **arg)
   if (!allocated) allocate();
 
   int ilo,ihi,jlo,jhi;
-  force->bounds(arg[0],atom->ntypes,ilo,ihi);
-  force->bounds(arg[1],atom->ntypes,jlo,jhi);
+  utils::bounds(FLERR,arg[0],1,atom->ntypes,ilo,ihi,error);
+  utils::bounds(FLERR,arg[1],1,atom->ntypes,jlo,jhi,error);
 
-  double epsilon_one = force->numeric(FLERR,arg[2]);
-  double sigma_one = force->numeric(FLERR,arg[3]);
+  double epsilon_one = utils::numeric(FLERR,arg[2],false,lmp);
+  double sigma_one = utils::numeric(FLERR,arg[3],false,lmp);
 
   double cut_one = cut_global;
   if (narg == 5) {
-    cut_one = force->numeric(FLERR,arg[4]);
+    cut_one = utils::numeric(FLERR,arg[4],false,lmp);
   }
 
   double bias_one = bias_global;
   if (narg == 6) {
-    bias_one = force->numeric(FLERR,arg[5]);
+    bias_one = utils::numeric(FLERR,arg[5],false,lmp);
   }
 
   int count = 0;
@@ -422,10 +435,10 @@ void PairLJSmoothLinearChiral::read_restart(FILE *fp)
       MPI_Bcast(&setflag[i][j],1,MPI_INT,0,world);
       if (setflag[i][j]) {
         if (me == 0) {
-          fread(&epsilon[i][j],sizeof(double),1,fp);
-          fread(&sigma[i][j],sizeof(double),1,fp);
-          fread(&cut[i][j],sizeof(double),1,fp);
-          fread(&bias[i][j],sizeof(double),1,fp);
+          utils::sfread(FLERR,&epsilon[i][j],sizeof(double),1,fp,nullptr,error);
+          utils::sfread(FLERR,&sigma[i][j],sizeof(double),1,fp,nullptr,error);
+          utils::sfread(FLERR,&cut[i][j],sizeof(double),1,fp,nullptr,error);
+          utils::sfread(FLERR,&bias[i][j],sizeof(double),1,fp,nullptr,error);
         }
         MPI_Bcast(&epsilon[i][j],1,MPI_DOUBLE,0,world);
         MPI_Bcast(&sigma[i][j],1,MPI_DOUBLE,0,world);
@@ -454,10 +467,9 @@ void PairLJSmoothLinearChiral::read_restart_settings(FILE *fp)
 {
   int me = comm->me;
   if (me == 0) {
-    fread(&cut_global,sizeof(double),1,fp);
-    fread(&mix_flag,sizeof(int),1,fp);
-    fread(&bias_global,sizeof(double),1,fp);
-
+    utils::sfread(FLERR,&cut_global,sizeof(double),1,fp,nullptr,error);
+    utils::sfread(FLERR,&mix_flag,sizeof(int),1,fp,nullptr,error);
+    utils::sfread(FLERR,&bias_global,sizeof(double),1,fp,nullptr,error);
   }
   MPI_Bcast(&cut_global,1,MPI_DOUBLE,0,world);
   MPI_Bcast(&mix_flag,1,MPI_INT,0,world);
@@ -495,6 +507,7 @@ double PairLJSmoothLinearChiral::single(int i, int j, int itype, int jtype,
 void PairLJSmoothLinearChiral::computezeta() 
 {
   int i1,i2,i3,i4,i,n,m;
+  double tag1, tag2, tag3, tag4;
   double vb1x,vb1y,vb1z,vb2x,vb2y,vb2z,vb3x,vb3y,vb3z;
   double sb1,sb2,sb3,b1mag2,b1mag,b2mag2;
   double b2mag,b3mag2,b3mag;
@@ -658,10 +671,15 @@ void PairLJSmoothLinearChiral::computezeta()
     dzetaz[i4] = - gradterm34z;
 
     // create mapping arrays of IDs for easy access during force compute
-    i1_vec[i1] = i1_vec[i2] = i1_vec[i3] = i1_vec[i4] = double(tag[i1]);
-    i2_vec[i1] = i2_vec[i2] = i2_vec[i3] = i2_vec[i4] = double(tag[i2]);
-    i3_vec[i1] = i3_vec[i2] = i3_vec[i3] = i3_vec[i4] = double(tag[i3]);
-    i4_vec[i1] = i4_vec[i2] = i4_vec[i3] = i4_vec[i4] = double(tag[i4]);
+    tag1 = static_cast<double>(tag[i1]);
+    tag2 = static_cast<double>(tag[i2]);
+    tag3 = static_cast<double>(tag[i3]);
+    tag4 = static_cast<double>(tag[i4]);
+
+    i1_vec[i1] = i1_vec[i2] = i1_vec[i3] = i1_vec[i4] = tag1;
+    i2_vec[i1] = i2_vec[i2] = i2_vec[i3] = i2_vec[i4] = tag2;
+    i3_vec[i1] = i3_vec[i2] = i3_vec[i3] = i3_vec[i4] = tag3;
+    i4_vec[i1] = i4_vec[i2] = i4_vec[i3] = i4_vec[i4] = tag4;
   }
   
   // communicate zeta/dzeta values between procs
@@ -673,8 +691,8 @@ void PairLJSmoothLinearChiral::computezeta()
    forward/reverse packing and unpacking routines for proc communication
 ------------------------------------------------------------------------- */
 
-int PairLJSmoothLinearChiral::pack_comm(int n, int *list, double *buf, int pbc_flag,
-    int *pbc) {
+int PairLJSmoothLinearChiral::pack_forward_comm(int n, int *list, double *buf,
+    int /*pbc_flag*/, int * /*pbc*/) {
   int i, j, m;
 	    
   m = 0;
@@ -689,12 +707,12 @@ int PairLJSmoothLinearChiral::pack_comm(int n, int *list, double *buf, int pbc_f
     buf[m++] = i3_vec[j];
     buf[m++] = i4_vec[j];
   }
-  return 8;
+  return m;
 }
 
 /* ---------------------------------------------------------------------- */
 
-void PairLJSmoothLinearChiral::unpack_comm(int n, int first, double *buf) {
+void PairLJSmoothLinearChiral::unpack_forward_comm(int n, int first, double *buf) {
   int i, m, last;
 
   m = 0;
@@ -729,7 +747,7 @@ int PairLJSmoothLinearChiral::pack_reverse_comm(int n, int first, double *buf)
     buf[m++] = i3_vec[i];
     buf[m++] = i4_vec[i];
   }
-  return 8;
+  return m;
 }
 
 /* ---------------------------------------------------------------------- */
