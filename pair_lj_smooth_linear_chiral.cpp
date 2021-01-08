@@ -53,7 +53,7 @@ PairLJSmoothLinearChiral::PairLJSmoothLinearChiral(LAMMPS *lmp) : Pair(lmp)
   comm_reverse = 8;
 
   first = 1;
-}
+  }
 
 /* ---------------------------------------------------------------------- */
 
@@ -92,6 +92,7 @@ void PairLJSmoothLinearChiral::compute(int eflag, int vflag)
 {
   int i,j,ii,jj,inum,jnum,itype,jtype;
   int k,m,k1,k2,k3,k4,m1,m2,m3,m4;
+  int ind1,ind2,ind3,ind4,jnd1,jnd2,jnd3,jnd4;
   double xtmp,ytmp,ztmp,delx,dely,delz,evdwl,fpair,evdwl_tmp;
   double rsq,r2inv,r6inv,forcelj,factor_lj;
   double r,rinv;
@@ -135,10 +136,15 @@ void PairLJSmoothLinearChiral::compute(int eflag, int vflag)
     ztmp = x[i][2];
 
     // 3 body term - identify local ID of monomers in tetramer A using mapping arrays
-    k1 = atom->map(int(i1_vec[i]));
-    k2 = atom->map(int(i2_vec[i]));
-    k3 = atom->map(int(i3_vec[i]));
-    k4 = atom->map(int(i4_vec[i]));
+    ind1 = static_cast<int>(i1_vec[i]);
+    ind2 = static_cast<int>(i2_vec[i]);
+    ind3 = static_cast<int>(i3_vec[i]);
+    ind4 = static_cast<int>(i4_vec[i]);
+    
+    k1 = atom->map(ind1);
+    k2 = atom->map(ind2);
+    k3 = atom->map(ind3);
+    k4 = atom->map(ind4);
 
     jlist = firstneigh[i];
     jnum = numneigh[i]; 
@@ -150,10 +156,15 @@ void PairLJSmoothLinearChiral::compute(int eflag, int vflag)
       jtype = type[j];
 	
       // 3 body term - identify local ID of monomers in tetramer B using mapping arrays
-      m1 = atom->map(int(i1_vec[j]));
-      m2 = atom->map(int(i2_vec[j]));
-      m3 = atom->map(int(i3_vec[j]));
-      m4 = atom->map(int(i4_vec[j]));
+      jnd1 = static_cast<int>(i1_vec[j]);
+      jnd2 = static_cast<int>(i2_vec[j]);
+      jnd3 = static_cast<int>(i3_vec[j]);
+      jnd4 = static_cast<int>(i4_vec[j]);
+
+      m1 = atom->map(jnd1);
+      m2 = atom->map(jnd2);
+      m3 = atom->map(jnd3);
+      m4 = atom->map(jnd4);
 
       // find LJ factor, strip additional info
       factor_lj = special_lj[sbmask(j)];
@@ -496,6 +507,7 @@ void PairLJSmoothLinearChiral::computezeta()
 {
   int i1,i2,i3,i4,i,n,m;
   double vb1x,vb1y,vb1z,vb2x,vb2y,vb2z,vb3x,vb3y,vb3z;
+  double tag1, tag2, tag3, tag4;
   double sb1,sb2,sb3,b1mag2,b1mag,b2mag2;
   double b2mag,b3mag2,b3mag;
   double e23e34[3], e12e34[3], e12e23[3], e23e34j[3], e12e34j[3], e12e23j[3]; 
@@ -658,10 +670,15 @@ void PairLJSmoothLinearChiral::computezeta()
     dzetaz[i4] = - gradterm34z;
 
     // create mapping arrays of IDs for easy access during force compute
-    i1_vec[i1] = i1_vec[i2] = i1_vec[i3] = i1_vec[i4] = double(tag[i1]);
-    i2_vec[i1] = i2_vec[i2] = i2_vec[i3] = i2_vec[i4] = double(tag[i2]);
-    i3_vec[i1] = i3_vec[i2] = i3_vec[i3] = i3_vec[i4] = double(tag[i3]);
-    i4_vec[i1] = i4_vec[i2] = i4_vec[i3] = i4_vec[i4] = double(tag[i4]);
+    tag1 = static_cast<double>(tag[i1]);
+    tag2 = static_cast<double>(tag[i2]);
+    tag3 = static_cast<double>(tag[i3]);
+    tag4 = static_cast<double>(tag[i4]);
+
+    i1_vec[i1] = i1_vec[i2] = i1_vec[i3] = i1_vec[i4] = tag1;
+    i2_vec[i1] = i2_vec[i2] = i2_vec[i3] = i2_vec[i4] = tag2;
+    i3_vec[i1] = i3_vec[i2] = i3_vec[i3] = i3_vec[i4] = tag3;
+    i4_vec[i1] = i4_vec[i2] = i4_vec[i3] = i4_vec[i4] = tag4;
   }
   
   // communicate zeta/dzeta values between procs
