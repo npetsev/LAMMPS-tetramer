@@ -185,7 +185,7 @@ void PairLJSmoothLinearChiral::compute(int eflag, int vflag)
         rinv  = sqrt(r2inv);
 
         forcelj = r6inv*(lj1[itype][jtype]*r6inv-lj2[itype][jtype]);
-        forcelj = rinv*forcelj - dljcut[itype][jtype];
+        forcelj = rinv*forcelj;
 
         // chiral renormalization term
         double bias_lj = 1.0 + bias_global*zeta[i]*zeta[j];	  
@@ -196,7 +196,7 @@ void PairLJSmoothLinearChiral::compute(int eflag, int vflag)
         // find non-LJ force pre-factor
         r = sqrt(rsq);
         evdwl_tmp = factor_lj*r6inv*(lj3[itype][jtype]*r6inv-lj4[itype][jtype]);
-        evdwl_tmp -= ljcut[itype][jtype] - (r - cut[itype][jtype])*dljcut[itype][jtype];	
+        evdwl_tmp -= ljcut[itype][jtype];
 		
         // append LJ force for particle i		
         f[i][0] += delx*fpair;
@@ -489,12 +489,11 @@ double PairLJSmoothLinearChiral::single(int i, int j, int itype, int jtype,
   rinv  = sqrt(r2inv);
   r     = sqrt(rsq);
   forcelj = r6inv*(lj1[itype][jtype]*r6inv-lj2[itype][jtype]);
-  forcelj = rinv*forcelj - dljcut[itype][jtype];
+  forcelj = rinv*forcelj;
   fforce = bias_lj*factor_lj*forcelj;
 
   philj = r6inv*(lj3[itype][jtype]*r6inv-lj4[itype][jtype]);
-  philj = philj - ljcut[itype][jtype]
-    + (r - cut[itype][jtype])*dljcut[itype][jtype];
+  philj = philj - ljcut[itype][jtype];
 
   return factor_lj*philj*bias_lj;
 }
