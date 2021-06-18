@@ -1,0 +1,31 @@
+#NVE check
+variable	fname index MT
+variable	simname index MTsim
+units		lj	
+atom_style	molecular
+log		log.${fname}.txt
+boundary        p p p      
+
+#########################################################
+read_restart    RestartMe.50000000
+include		forcefield-base.dat
+neigh_modify 	exclude molecule all
+
+############THERMO AND TIME STEP#########################
+timestep	0.0005
+
+###########SET TEMPERATURE################################
+variable 	T equal 1.6
+
+##########################################################
+group sub id 1:4000:4
+
+thermo          1000
+thermo_style    custom temp press density ebond eangle edihed pe ke etotal
+thermo_modify   norm no
+
+fix             lowT all nve 
+restart 10000000 RestartMe
+run             50000000
+
+
