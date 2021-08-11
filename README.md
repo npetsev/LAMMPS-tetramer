@@ -1,10 +1,8 @@
-# LAMMPS-tetramer
-This LAMMPSChiralTetramerModel.txt file was generated on 2021-06-18 by Nikolai D. Petsev
+This LAMMPSChiralTetramerModel.txt file was generated on 2021-08-01 by Nikolai D. Petsev
 
 GENERAL INFORMATION
 
-1. Title of Research Code: Source code from "Effect of configuration-dependent multi-body forces on interconversion kinetics of a chiral tetramer model
-"
+1. Title of Research Code: Chiral Tetramer Molecular Model
 
 2. Author Information
 	A. Principal Investigator Contact Information
@@ -19,7 +17,29 @@ GENERAL INFORMATION
 		Address: Princeton, NJ 08540, USA
 		Emails: fhs@princeton.edu, pdebene@princeton.edu
 
-        Code is based on pair_lj_smooth_linear by Jonathan Zimmerman
+        Source code is based on the pair_lj_smooth_linear force-field by Jonathan Zimmerman and relies on LAMMPS - 
+        Large-scale Atomic/Molecular Massively Parallel Simulator by Steve Plimpton. 
+        Detailed breakdown of contributions for chiral model implementation:
+
+        Original function by Jonathan Zimmerman, significant modifications by Nikolai Petsev:
+            - PairLJSmoothLinearChiral::compute()
+        Functions added by Nikolai Petsev:
+            - PairLJSmoothLinearChiral::computezeta()
+            - PairLJSmoothLinearChiral::pack_comm()  
+            - PairLJSmoothLinearChiral::unpack_comm()  
+            - PairLJSmoothLinearChiral::pack_reverse_comm()  
+            - PairLJSmoothLinearChiral::unpack_reverse_comm()  
+            - PairLJSmoothLinearChiral::memory_usage()  
+        Original function by Jonathan Zimmerman, minor modifications by Nikolai Petsev:
+            - PairLJSmoothLinearChiral::compute() 
+            - PairLJSmoothLinearChiral::settings() 
+            - PairLJSmoothLinear::coeff() 
+            - PairLJSmoothLinearChiral::init_one()  
+            - PairLJSmoothLinearChiral::write_restart()
+            - PairLJSmoothLinearChiral::read_restart() 
+            - PairLJSmoothLinearChiral::write_restart_settings()    
+            - PairLJSmoothLinearChiral::read_restart_settings() 
+            - PairLJSmoothLinearChiral::single()    
 
 3. Date of research code production: 2020-08-01 to 2021-11-01 
 
@@ -30,22 +50,38 @@ GENERAL INFORMATION
 
 SHARING/ACCESS INFORMATION
 
-1. Licenses/restrictions placed on the code N/A
+1. Licenses/restrictions placed on the code:
+
+    Chiral Tetramer Molecular Model, Copyright (2021) Nikolai D. Petsev. This software is distributed under the GNU
+    General Public License, and is derived from LAMMPS - Large-Scale Atomic/Molecular Massively Parallel Simulator
+    by Steve Plimpton, Copyright (2003) Sandia Corporation, https://www.lammps.org.
+
+    Full license is included in the top-level directory.
 
 2. Links to publications that cite or use the code: 
 
-Petsev et al. Effect of configuration-dependent multi-body forces on interconversion kinetics of a chiral tetramer model
+    Petsev et al. Effect of configuration-dependent multi-body forces on interconversion kinetics of a chiral tetramer model
  (in preparation 2021). 
-Wang et al. Vapor-liquid-liquid phase transition of a chiral tetramer model (in preparation 2021).
-Uralcan et al. Interconversion-controlled liquid-liquid phase separation in a molecular chiral model (in preparation 2021).
+    Wang et al. Vapor-liquid-liquid phase transition of a chiral tetramer model (in preparation 2021).
+    Uralcan et al. Interconversion-controlled liquid-liquid phase separation in a molecular chiral model (in preparation 2021).
 
 3. Links to other publicly accessible locations of the code: https://github.com/npetsev/LAMMPS-tetramer
 
-4. Links/relationships to ancillary codebases: The chiral tetramer model force field works with the LAMMPS simulation package (https://www.lammps.org/)
+4. Links/relationships to ancillary codebases: The chiral tetramer molcular model force field works with the LAMMPS simulation package (https://www.lammps.org/)
 
-5. Was code derived from another source? No
+5. Was code derived from another source? 
 
-6. Recommended citation for this dataset: Nikolai D. Petsev, Frank H. Stillinger, and Pablo G. Debenedetti, Source code from "Effect of configuration-dependent multi-body forces on interconversion kinetics of a chiral tetramer model". Princeton DataSpace. Available at XX. Deposited June 2021.
+    This software uses the LAMMPS - Large-Scale Atomic/Molecular Massively Parallel Simulator package by Steve Plimpton, Copyright (2003)
+    Sandia Corporation, https://www.lammps.org. The modified/new code is derived from the pair_lj_smooth_linear force-field
+    by Jonathan Zimmerman.
+
+    For additional details on LAMMPS, please see the official website (https://www.lammps.org). A detailed description of LAMMPS can be found at:
+
+    S. Plimpton, Fast Parallel Algorithms for Short-Range Molecular Dynamics, J Comp Phys, 117, 1-19 (1995). 
+
+6. Recommended citation for this dataset: 
+
+    Nikolai D. Petsev, Frank H. Stillinger, and Pablo G. Debenedetti, Chiral Tetramer Molecular Model. Princeton DataSpace. Available at XX. Deposited June 2021.
 
 
 FILE OVERVIEW
@@ -65,7 +101,10 @@ forcefield-base.dat -- sample input file with force field parameters
 
 2. Relationship between files, if important: N/A 
 
-3. Additional source code that was not included in the current package: N/A
+3. Additional source code that was not included in the current package:
+
+    The source code for the chiral tetramer molecular model must be compiled with the LAMMPS package, available at
+    https://www.lammps.org.
 
 4. Are there multiple versions of the code? Yes (LAMMPS 2014 compatible and LAMMPS 2020 compatible versions available)
 
