@@ -1,6 +1,6 @@
 This LAMMPSChiralTetramerModel.txt file was generated on 2021-08-01 by Nikolai D. Petsev
 
-GENERAL INFORMATION
+# GENERAL INFORMATION
 
 1. Title of Research Code: Chiral Tetramer Molecular Model
 
@@ -17,29 +17,34 @@ GENERAL INFORMATION
 		Address: Princeton, NJ 08540, USA
 		Emails: fhs@princeton.edu, pdebene@princeton.edu
 
-        Source code is based on the pair_lj_smooth_linear force-field by Jonathan Zimmerman and relies on LAMMPS - 
-        Large-scale Atomic/Molecular Massively Parallel Simulator by Steve Plimpton. 
-        Detailed breakdown of contributions for chiral model implementation:
+	Source code is based on the pair_lj_smooth_linear force-field by Jonathan Zimmerman and relies on LAMMPS - 
+	Large-scale Atomic/Molecular Massively Parallel Simulator by Steve Plimpton. 
+	Detailed breakdown of contributions for chiral model implementation:
 
-        Original function by Jonathan Zimmerman, significant modifications by Nikolai Petsev:
-            - PairLJSmoothLinearChiral::compute()
-        Functions added by Nikolai Petsev:
-            - PairLJSmoothLinearChiral::computezeta()
-            - PairLJSmoothLinearChiral::pack_comm()  
-            - PairLJSmoothLinearChiral::unpack_comm()  
-            - PairLJSmoothLinearChiral::pack_reverse_comm()  
-            - PairLJSmoothLinearChiral::unpack_reverse_comm()  
-            - PairLJSmoothLinearChiral::memory_usage()  
-        Original function by Jonathan Zimmerman, minor modifications by Nikolai Petsev:
-            - PairLJSmoothLinearChiral::compute() 
-            - PairLJSmoothLinearChiral::settings() 
-            - PairLJSmoothLinear::coeff() 
-            - PairLJSmoothLinearChiral::init_one()  
-            - PairLJSmoothLinearChiral::write_restart()
-            - PairLJSmoothLinearChiral::read_restart() 
-            - PairLJSmoothLinearChiral::write_restart_settings()    
-            - PairLJSmoothLinearChiral::read_restart_settings() 
-            - PairLJSmoothLinearChiral::single()    
+	Original function by Jonathan Zimmerman, significant modifications by Nikolai Petsev:
+	
+    - PairLJSmoothLinearChiral::compute()
+ 
+	Functions added by Nikolai Petsev:
+	
+	- PairLJSmoothLinearChiral::computezeta()
+	- PairLJSmoothLinearChiral::pack_comm()  
+	- PairLJSmoothLinearChiral::unpack_comm()  
+	- PairLJSmoothLinearChiral::pack_reverse_comm()  
+	- PairLJSmoothLinearChiral::unpack_reverse_comm()  
+	- PairLJSmoothLinearChiral::memory_usage()  
+
+	Original function by Jonathan Zimmerman, minor modifications by Nikolai Petsev:
+	
+	- PairLJSmoothLinearChiral::compute() 
+	- PairLJSmoothLinearChiral::settings() 
+	- PairLJSmoothLinear::coeff() 
+	- PairLJSmoothLinearChiral::init_one()  
+	- PairLJSmoothLinearChiral::write_restart()
+	- PairLJSmoothLinearChiral::read_restart() 
+	- PairLJSmoothLinearChiral::write_restart_settings()    
+	- PairLJSmoothLinearChiral::read_restart_settings() 
+	- PairLJSmoothLinearChiral::single()    
 
 3. Date of research code production: 2020-08-01 to 2021-11-01 
 
@@ -48,7 +53,7 @@ GENERAL INFORMATION
 5. Information about funding sources that supported the production of the code: National Science Foundation (grant CHE-1856704).
 
 
-SHARING/ACCESS INFORMATION
+# SHARING/ACCESS INFORMATION
 
 1. Licenses/restrictions placed on the code:
 
@@ -81,23 +86,24 @@ SHARING/ACCESS INFORMATION
 
 6. Recommended citation for this dataset: 
 
-    Nikolai D. Petsev, Frank H. Stillinger, and Pablo G. Debenedetti, Chiral Tetramer Molecular Model. Princeton DataSpace. Available at XX. Deposited June 2021.
+    Nikolai D. Petsev, Frank H. Stillinger, and Pablo G. Debenedetti, Chiral Tetramer Molecular Model. Princeton DataSpace. Available at http://arks.princeton.edu/ark:/88435/dsp01z890rx36m. Deposited June 2021.
 
 
-FILE OVERVIEW
+# FILE OVERVIEW
 
 1. File List: 
-compute_zeta_ave.cpp -- compute for calculating the average chiral measure zeta of the system
-compute_zeta_ave.h -- header file for zeta_ave compute
-compute_zeta_ee.cpp -- compute for finding the system enantiomeric excess
-compute_zeta_ee.h -- header file for ee compute
-pair_lj_smooth_linear_chiral.cpp -- force calculation for the chiral tetramer model
-pair_lj_smooth_linear_chiral.h -- header file for force calculation
-style_compute -- header file that ensures we include added compute routines when compiling
-style_pair -- header file that ensures we include chiral tetramer force interaction when compiling
-in.NVE -- sample input file for performing simulation at constant NVE conditions
-RestartMe.50000000 -- sample restart file
-forcefield-base.dat -- sample input file with force field parameters
+
+	- compute_zeta_ave.cpp -- compute for calculating the average chiral measure zeta of the system
+	- compute_zeta_ave.h -- header file for zeta_ave compute
+	- compute_zeta_ee.cpp -- compute for finding the system enantiomeric excess
+	- compute_zeta_ee.h -- header file for ee compute
+	- pair_lj_smooth_linear_chiral.cpp -- force calculation for the chiral tetramer model
+	- pair_lj_smooth_linear_chiral.h -- header file for force calculation
+	- style_compute -- header file that ensures we include added compute routines when compiling
+	- style_pair -- header file that ensures we include chiral tetramer force interaction when compiling
+	- in.NVE -- sample input file for performing simulation at constant NVE conditions
+	- RestartMe.50000000 -- sample restart file
+	- forcefield-base.dat -- sample input file with force field parameters
 
 2. Relationship between files, if important: N/A 
 
@@ -109,7 +115,7 @@ forcefield-base.dat -- sample input file with force field parameters
 4. Are there multiple versions of the code? Yes (LAMMPS 2014 compatible and LAMMPS 2020 compatible versions available)
 
 
-INSTALLATION
+# INSTALLATION
 
 This force field has been tested and debugged using the 2014 and 2020 versions of LAMMPS. To install:
 
@@ -117,22 +123,22 @@ This force field has been tested and debugged using the 2014 and 2020 versions o
 
 2. For convenience, we include style_pair.h and style_compute.h files, which can replace the existing ones in the LAMMPS directory. However, a safer route is to open the existing style_pair.h in your copy of LAMMPS, and add the following line:
 
-#include "pair_lj_smooth_linear_chiral.h"
+		#include "pair_lj_smooth_linear_chiral.h"
 
 Similarly, to use the average of zeta and ee computes, you can add the following lines to the style_compute.h file in your existing LAMMPS directory:
 
-#include "compute_zeta_ave.h" 
-#include "compute_zeta_ee.h"
+		#include "compute_zeta_ave.h" 
+		#include "compute_zeta_ee.h"
 
 3. Compile LAMMPS.
 
 
-VALIDATION
+# VALIDATION
 
 Detailed description of our validation methods is available in the accompanying publication. One important check to see if everything installed properly is to perform an NVE simulation and confirm that energy is being conserved. We provide a simple input script for such an NVE test. Note that a longer interaction cut-off (rc ~4.0) is required to give energy conservation.
 
 
-IMPLEMENTATION DETAILS
+# IMPLEMENTATION DETAILS
 
 The source code is set up as follows (see accompanying publication for additional context) [brackets indicate function that performs indicated action]:
 
@@ -150,15 +156,15 @@ Note that i1, i2, i3, and i4 above are global ids. We can find the local ids usi
 We include a check to ensure that atom-> map(i1_vec[i]) > -1, since we do not want to try to assign forces to atoms that are not known to the local processor.
 
 
-VARIABLE LIST
+# VARIABLE LIST
 
 This list contains important variables there are not normally computed by LAMMPS or included in the original pair_lj_smooth_linear:
 
-zeta = array storing the chiral measure zeta value for each molecule (note that array length is same as the number of monomers in the system, and monomers belonging to the same molecule have identical zeta values)
-dzetax = array storing the x-component of the gradient of zeta for each monomer in the system
-dzetay = array storing the y-component of the gradient of zeta for each monomer in the system
-dzetaz = array storing the z-component of the gradient of zeta for each monomer in the system
-i1_vec = mapping array storing i = 1 monomer ids
-i2_vec = mapping array storing i = 2 monomer ids
-i3_vec = mapping array storing i = 3 monomer ids
-i4_vec = mapping array storing i = 4 monomer ids
+- zeta = array storing the chiral measure zeta value for each molecule (note that array length is same as the number of monomers in the system, and monomers belonging to the same - molecule have identical zeta values)
+- dzetax = array storing the x-component of the gradient of zeta for each monomer in the system
+- dzetay = array storing the y-component of the gradient of zeta for each monomer in the system
+- dzetaz = array storing the z-component of the gradient of zeta for each monomer in the system
+- i1_vec = mapping array storing i = 1 monomer ids
+- i2_vec = mapping array storing i = 2 monomer ids
+- i3_vec = mapping array storing i = 3 monomer ids
+- i4_vec = mapping array storing i = 4 monomer ids
