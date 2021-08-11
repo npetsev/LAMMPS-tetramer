@@ -160,11 +160,11 @@ We include a check to ensure that atom-> map(i1_vec[i]) > -1, since we do not wa
 
 This list contains important variables there are not normally computed by LAMMPS or included in the original pair_lj_smooth_linear:
 
-	- zeta = array storing the chiral measure zeta value for each molecule (note that array length is same as the number of monomers in the system, and monomers belonging to the same - molecule have identical zeta values)
-	- dzetax = array storing the x-component of the gradient of zeta for each monomer in the system
-	- dzetay = array storing the y-component of the gradient of zeta for each monomer in the system
-	- dzetaz = array storing the z-component of the gradient of zeta for each monomer in the system
-	- i1_vec = mapping array storing i = 1 monomer ids
-	- i2_vec = mapping array storing i = 2 monomer ids
-	- i3_vec = mapping array storing i = 3 monomer ids
-	- i4_vec = mapping array storing i = 4 monomer ids
+- zeta = array storing the chiral measure zeta value for each molecule (note that array length is same as the number of monomers in the system, and monomers belonging to the same - molecule have identical zeta values)
+- dzetax = array storing the x-component of the gradient of zeta for each monomer in the system
+- dzetay = array storing the y-component of the gradient of zeta for each monomer in the system
+- dzetaz = array storing the z-component of the gradient of zeta for each monomer in the system
+- i1_vec = mapping array storing i = 1 monomer ids
+- i2_vec = mapping array storing i = 2 monomer ids
+- i3_vec = mapping array storing i = 3 monomer ids
+- i4_vec = mapping array storing i = 4 monomer ids
