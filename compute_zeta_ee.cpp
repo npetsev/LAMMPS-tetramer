@@ -1,14 +1,25 @@
 /* ----------------------------------------------------------------------
-   LAMMPS - Large-scale Atomic/Molecular Massively Parallel Simulator
-   http://lammps.sandia.gov, Sandia National Laboratories
-   Steve Plimpton, sjplimp@sandia.gov
+    Chiral Tetramer Molecular Model (CTMM), Copyright (2021) Nikolai D. Petsev. 
+    This software is distributed under the GNU General Public License, 
+    and is derived from LAMMPS - Large-Scale Atomic/Molecular Massively Parallel Simulator
+    by Steve Plimpton, Copyright (2003) Sandia Corporation, https://www.lammps.org.
 
-   Copyright (2003) Sandia Corporation.  Under the terms of Contract
-   DE-AC04-94AL85000 with Sandia Corporation, the U.S. Government retains
-   certain rights in this software.  This software is distributed under
-   the GNU General Public License.
+    See the README file in the top-level directory.
+   
+    This file is part of CTMM.
 
-   See the README file in the top-level LAMMPS directory.
+    CTMM is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CTMM is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with CTMM.  If not, see <https://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------- */
 
 #include "mpi.h"
