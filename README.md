@@ -66,7 +66,7 @@ This LAMMPSChiralTetramerModel.txt file was generated on 2021-08-01 by Nikolai D
 2. Links to publications that cite or use the code: 
 
     Petsev et al. Effect of configuration-dependent multi-body forces on interconversion kinetics of a chiral tetramer model
- (in preparation 2021). 
+ (JCP 2021) (https://doi.org/10.1063/5.0060266). 
     Wang et al. Vapor-liquid-liquid phase transition of a chiral tetramer model (in preparation 2021).
     Uralcan et al. Interconversion-controlled liquid-liquid phase separation in a molecular chiral model (in preparation 2021).
 
