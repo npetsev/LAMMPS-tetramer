@@ -117,7 +117,7 @@ This LAMMPSChiralTetramerModel.txt file was generated on 2021-08-01 by Nikolai D
 
 # INSTALLATION
 
-This force field has been tested and debugged using the 2014 and 2020 versions of LAMMPS. To install:
+This force field has been tested and debugged using the 2014 and 2020 versions of LAMMPS. Note that the 2014 version is the stable and vetted release. To install:
 
 1. Add files in this repository to main LAMMPS folder (style headers are optional, see step 2). Make sure you have downloaded source code compatible with your version of LAMMPS.
 
