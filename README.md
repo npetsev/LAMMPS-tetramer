@@ -93,10 +93,10 @@ This LAMMPSChiralTetramerModel.txt file was generated on 2021-08-01 by Nikolai D
 
 1. File List: 
 
-	- compute_zeta_ave.cpp -- compute for calculating the average chiral measure zeta of the system
-	- compute_zeta_ave.h -- header file for zeta_ave compute
-	- compute_zeta_ee.cpp -- compute for finding the system enantiomeric excess
-	- compute_zeta_ee.h -- header file for ee compute
+	- compute_zeta_ave.cpp -- compute for calculating the average chiral measure zeta of the system (2014 version only)
+	- compute_zeta_ave.h -- header file for zeta_ave compute (2014 version only)
+	- compute_zeta_ee.cpp -- compute for finding the system enantiomeric excess (2014 version only)
+	- compute_zeta_ee.h -- header file for ee compute (2014 version only)
 	- pair_lj_smooth_linear_chiral.cpp -- force calculation for the chiral tetramer model
 	- pair_lj_smooth_linear_chiral.h -- header file for force calculation
 	- style_compute -- header file that ensures we include added compute routines when compiling
