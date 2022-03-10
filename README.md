@@ -18,7 +18,9 @@ This LAMMPSChiralTetramerModel.txt file was generated on 2021-08-01 by Nikolai D
 		Emails: fhs@princeton.edu, pdebene@princeton.edu
 
 	Source code is based on the pair_lj_smooth_linear force-field by Jonathan Zimmerman and relies on LAMMPS - 
-	Large-scale Atomic/Molecular Massively Parallel Simulator by Steve Plimpton. 
+	Large-scale Atomic/Molecular Massively Parallel Simulator by Steve Plimpton. Thank you to Pablo Piaggi
+	for identifying and providng fix for memory leak in zeta/ee computes.
+	
 	Detailed breakdown of contributions for chiral model implementation:
 
 	Original function by Jonathan Zimmerman, significant modifications by Nikolai Petsev:
